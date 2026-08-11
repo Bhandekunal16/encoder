@@ -1,0 +1,11 @@
+{
+  "title": "Word Converter",
+  "inputs": [
+    {
+      "name": "word",
+      "type": "text",
+      "label": "Word",
+      "placeholder": "Enter a word"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "SITE_META": {
+    "title": "Word encoder",
+    "description": "word encoding - sensitive information by encoding or decoding text.",
+    "keywords": "word encoder, word, encoder",
+    "author": "Word encoder",
+    "ogTitle": "Word encoder - encode sensitive data",
+    "ogDescription": "sensitive information by encoding or decoding text.",
+    "ogUrl": "https://wordencoder.vercel.app/"
+  },
+  "TITLES": {
+    "home": "Word encoder",
+    "convert": "Convert Word",
+    "revert": "Revert Word",
+    "api": "Word Converter API Guide"
+  },
+  "BUTTONS": {
+    "convert": "Convert",
+    "revert": "Revert"
+  },
+  "LINKS": {
+    "back": "Go back"
+  }
+}

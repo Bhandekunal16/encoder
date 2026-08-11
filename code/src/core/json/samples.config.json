@@ -1,0 +1,32 @@
+{
+  "samples": [
+    {
+      "id": "initial-convert",
+      "title": "Initial Convert",
+      "method": "POST",
+      "code": "/initial/convert",
+      "payload": { "word": "hello world" },
+      "response": {
+        "data": "8.5.12.12.15.0.23.15.18.12.4",
+        "status": true,
+        "msg": "success",
+        "statusCode": 200
+      }
+    },
+    {
+      "id": "initial-revert",
+      "title": "Initial Revert",
+      "method": "POST",
+      "code": "/initial/revert",
+      "payload": {
+        "word": "8.5.12.12.15.0.23.15.18.12.4"
+      },
+      "response": {
+        "data": "hello world",
+        "status": true,
+        "msg": "success",
+        "statusCode": 200
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+.page {
+  min-height: 100vh;
+  color: #333;
+}
+
+.page h1 {
+  margin: 16px;
+}
+
+.toggleAdd,
+.toggleSub {
+  color: #fff;
+  padding: 2%;
+  border-radius: 8px;
+  border: #fff solid 1px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.toggleAdd {
+  background-color: green;
+}
+
+.toggleAdd:hover {
+  background-color: rgb(30, 141, 30);
+  border: #000 solid 1px;
+}
+
+.toggleSub {
+  background-color: red;
+}
+
+.toggleSub:hover {
+  background-color: rgb(155, 20, 20);
+  border: #000 solid 1px;
+}
+
+.outerContainer {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 1%;
+  padding-top: 1%;
+  border-top: #000 solid 1px;
+}
+
+.cover {
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .outerContainer {
+    display: flex;
+    flex-direction: column;
+  }
+}
