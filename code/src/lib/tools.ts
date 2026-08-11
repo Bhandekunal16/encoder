@@ -11,8 +11,12 @@ export function getAllTools(): Tool[] {
   return config.categories.flatMap((category) => category.tools);
 }
 
+function normalizeSearchQuery(query: string): string {
+  return query.trim().toLowerCase();
+}
+
 export function filterTools(tools: Tool[], query: string): Tool[] {
-  const normalized = query.trim().toLowerCase();
+  const normalized = normalizeSearchQuery(query);
 
   if (!normalized) {
     return tools;
@@ -26,16 +30,22 @@ export function filterTools(tools: Tool[], query: string): Tool[] {
 }
 
 export function filterCategories(query: string) {
-  const normalized = query.trim().toLowerCase();
+  const normalized = normalizeSearchQuery(query);
 
   if (!normalized) {
     return config.categories;
   }
 
   return config.categories
-    .map((category) => ({
-      ...category,
-      tools: filterTools(category.tools, query),
-    }))
+    .map((category) => {
+      const categoryMatches = category.label.toLowerCase().includes(normalized);
+
+      return {
+        ...category,
+        tools: categoryMatches
+          ? [...category.tools]
+          : filterTools(category.tools, query),
+      };
+    })
     .filter((category) => category.tools.length > 0);
 }
