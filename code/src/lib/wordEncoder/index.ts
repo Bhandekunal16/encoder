@@ -13,7 +13,6 @@ export {
   CHARSET,
   MAX_ENCODED_LENGTH,
   MAX_INPUT_LENGTH,
-  MAX_RESULT_URL_LENGTH,
 } from "./constants";
 export {
   MAX_CHAR_INDEX,

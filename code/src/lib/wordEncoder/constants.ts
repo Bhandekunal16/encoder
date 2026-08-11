@@ -38,8 +38,5 @@ export const MAX_INPUT_LENGTH = 500;
  */
 export const MAX_ENCODED_LENGTH = 1500;
 
-/** Conservative URL path + query budget for result redirects. */
-export const MAX_RESULT_URL_LENGTH = 2000;
-
 /** Canonical numeric token: `0` or a non-zero-leading positive integer. */
 export const CANONICAL_TOKEN_PATTERN = /^(0|[1-9]\d*)$/;

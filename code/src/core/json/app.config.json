@@ -9,18 +9,7 @@
     "ogUrl": "https://wordencoder.vercel.app/"
   },
   "TITLES": {
-    "home": "Word encoder",
-    "convert": "Convert Word",
-    "revert": "Revert Word",
     "api": "Word Converter API Guide"
-  },
-  "BUTTONS": {
-    "convert": "Convert",
-    "revert": "Revert"
-  },
-  "LINKS": {
-    "back": "Go back",
-    "wordDecoder": "Word Decoder"
   },
   "ERRORS": {
     "somethingWentWrong": "Something went wrong. Please try again."

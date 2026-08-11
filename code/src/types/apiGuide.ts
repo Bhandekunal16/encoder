@@ -25,7 +25,3 @@ export type ApiGuideConfig = {
   description: string;
   tooltip: string;
 };
-
-export type RouteConfig = {
-  base: string;
-};

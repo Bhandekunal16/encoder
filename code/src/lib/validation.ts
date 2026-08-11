@@ -3,13 +3,7 @@ import {
   encode,
   WordEncoderError,
   type WordEncoderErrorCode,
-  isSupportedCharacter,
 } from "@/lib/wordEncoder";
-import {
-  MAX_ENCODED_LENGTH,
-  MAX_INPUT_LENGTH,
-  MAX_RESULT_URL_LENGTH,
-} from "@/lib/wordEncoder/constants";
 
 export type ValidationResult<T> =
   | { ok: true; value: T }
@@ -60,40 +54,6 @@ export function validateRevertInput(input: unknown): ValidationResult<string> {
   }
 }
 
-/** Validate encoded `?ans=` values shown on `/convert`. */
-export function validateEncodedResult(input: unknown): ValidationResult<string> {
-  return validateRevertInput(input);
-}
-
-/** Validate plaintext `?ans=` values shown on `/revert`. */
-export function validatePlaintextResult(input: unknown): ValidationResult<string> {
-  if (typeof input !== "string") {
-    return failure("InvalidInputType", "Result must be a string");
-  }
-
-  if (input.length === 0) {
-    return failure("EmptyInput", "Input cannot be empty");
-  }
-
-  if (input.length > MAX_INPUT_LENGTH) {
-    return failure(
-      "InputTooLong",
-      `Input exceeds maximum length of ${MAX_INPUT_LENGTH} characters`,
-    );
-  }
-
-  for (const char of input) {
-    if (!isSupportedCharacter(char)) {
-      return failure(
-        "UnsupportedCharacter",
-        `Unsupported character: ${JSON.stringify(char)}`,
-      );
-    }
-  }
-
-  return { ok: true, value: input };
-}
-
 /** Validate API `word` field before route-specific processing. */
 export function validateApiWord(input: unknown): ValidationResult<string> {
   if (input === undefined || input === null) {
@@ -124,9 +84,4 @@ export function encoderErrorToMessage(code: WordEncoderErrorCode): string {
     default:
       return "Invalid input";
   }
-}
-
-export function isSafeResultRedirect(path: string, encodedAnswer: string): boolean {
-  const url = `${path}?ans=${encodeURIComponent(encodedAnswer)}`;
-  return url.length <= MAX_RESULT_URL_LENGTH;
 }
