@@ -4,7 +4,8 @@ import { SITE_META, TITLES } from "@/constants/meta";
 import apiGuideConfig from "@/core/json/apiGuide.config.json";
 import routeConfig from "@/core/json/route.config.json";
 import samplesConfig from "@/core/json/samples.config.json";
-import { validateSamples } from "@/lib/validateSamples";
+import { validateSamples, validateEncodingSelfTests } from "@/lib/validateEncoding";
+import { validateAppConfig, validateRouteConfig } from "@/lib/validateConfig";
 import type {
   ApiGuideConfig,
   RouteConfig,
@@ -27,6 +28,9 @@ const {
 const { back: linkText } = appConfig.LINKS as LinksConfig;
 
 validateSamples(samples);
+validateEncodingSelfTests();
+validateAppConfig(appConfig);
+validateRouteConfig(routeConfig as RouteConfig);
 
 export const metadata: Metadata = { title, description };
 

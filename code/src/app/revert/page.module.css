@@ -33,7 +33,12 @@
   margin: 10px 0;
   color: #555;
   text-align: center;
-  word-wrap: break-word;
+  width: 80%;
+  overflow: auto;
+}
+
+.answer {
+  word-break: break-word;
 }
 
 .backLink {

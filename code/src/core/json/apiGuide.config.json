@@ -1,5 +1,5 @@
 {
   "title": "Word Converter API Guide",
   "description": "This guide provides an overview of the available API endpoints, including their methods, descriptions, request formats, and example responses.",
-  "tooltip": "Ensure all POST requests include a Content-Type: application/x-www-form-urlencoded header."
+  "tooltip": "POST requests must include Content-Type: application/json or application/x-www-form-urlencoded. The word field must be a string. Maximum input length is 500 characters. Only ASCII letters, digits, space, and supported punctuation are accepted for encoding."
 }

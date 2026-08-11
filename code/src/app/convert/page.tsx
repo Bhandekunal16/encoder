@@ -7,7 +7,9 @@ import { RouteConfig } from "@/types/apiGuide";
 import config from "../../core/json/convert.config.json";
 import appConfig from "../../core/json/app.config.json";
 import { ButtonsConfig, LinksConfig } from "@/types/app";
+import { validateConvertConfig } from "@/lib/validateConfig";
 import type { ConvertConfig } from "@/types/convert";
+import { validateEncodedResult } from "@/lib/validation";
 
 type ConvertPageProps = {
   searchParams: Promise<{ ans?: string }>;
@@ -15,14 +17,19 @@ type ConvertPageProps = {
 
 const { base } = routes as RouteConfig;
 const { title: pageTitle, inputs } = config as ConvertConfig;
+validateConvertConfig(config as ConvertConfig);
 const { convert: buttonText } = appConfig.BUTTONS as ButtonsConfig;
 const { back: linkText } = appConfig.LINKS as LinksConfig;
 
 export default async function ConvertPage({ searchParams }: ConvertPageProps) {
   const { ans } = await searchParams;
-  const answer = ans?.trim();
+  const validated = validateEncodedResult(ans);
 
-  if (!answer) redirect(base);
+  if (!validated.ok) {
+    redirect(base);
+  }
+
+  const answer = validated.value;
 
   return (
     <main className={styles.page}>
