@@ -22,16 +22,19 @@ export default async function RevertPage({ searchParams }: RevertPageProps) {
   const answer = validated.value;
 
   return (
-    <main className={styles.page}>
-      <div className={styles.container}>
-        <h1>Word Result</h1>
-        <p>
-          <strong>{answer}</strong>
-        </p>
-        <Link href={base} className={styles.backLink}>
-          Go Back
+    <div className={styles.panel}>
+      <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+        <Link href="/tools/decode" className={styles.backLink}>
+          Word Decoder
         </Link>
+      </nav>
+
+      <h1 className={styles.title}>Word Result</h1>
+
+      <div className={styles.resultCard}>
+        <span className={styles.resultLabel}>Decoded result</span>
+        <p className={styles.result}>{answer}</p>
       </div>
-    </main>
+    </div>
   );
 }

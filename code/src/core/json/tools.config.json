@@ -1,0 +1,45 @@
+{
+  "categories": [
+    {
+      "id": "encoder-decoder",
+      "label": "Encoder / Decoder",
+      "tools": [
+        {
+          "id": "word-encoder",
+          "title": "Word Encoder",
+          "description": "Encode sensitive text into numeric indices separated by dots.",
+          "href": "/tools/encode",
+          "icon": "encode"
+        },
+        {
+          "id": "word-decoder",
+          "title": "Word Decoder",
+          "description": "Decode numeric indices back to plain text.",
+          "href": "/tools/decode",
+          "icon": "decode"
+        }
+      ]
+    },
+    {
+      "id": "integration",
+      "label": "Integration",
+      "tools": [
+        {
+          "id": "api-guide",
+          "title": "API Guide",
+          "description": "HTTP endpoints for encoding and decoding words programmatically.",
+          "href": "/apiguide",
+          "icon": "api"
+        },
+        {
+          "id": "npm-package",
+          "title": "NPM Package",
+          "description": "Install word-encoder for use in Node.js projects.",
+          "href": "https://www.npmjs.com/package/word-encoder",
+          "icon": "npm",
+          "external": true
+        }
+      ]
+    }
+  ]
+}

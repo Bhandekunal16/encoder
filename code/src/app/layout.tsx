@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE_META } from "@/constants/meta";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -22,7 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <DashboardLayout>{children}</DashboardLayout>
+      </body>
     </html>
   );
 }

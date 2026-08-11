@@ -20,10 +20,18 @@ function ActionFeedback({
   }
 
   if (state.ok) {
-    return <p className={styles.result}>{state.result}</p>;
+    return (
+      <div className={styles.output} role="status" aria-live="polite">
+        <p className={styles.result}>{state.result}</p>
+      </div>
+    );
   }
 
-  return <p className={styles.error}>{state.error}</p>;
+  return (
+    <div className={styles.output} role="alert">
+      <p className={styles.error}>{state.error}</p>
+    </div>
+  );
 }
 
 export default function InlineRevertForm({
@@ -35,8 +43,8 @@ export default function InlineRevertForm({
   return (
     <form action={action} className={styles.form}>
       {inputs.map(({ name, type, placeholder, label }) => (
-        <div key={name} className={styles.field}>
-          <label htmlFor={name} className={styles.srOnly}>
+        <div key={name} className={styles.fieldGroup}>
+          <label htmlFor={name} className={styles.label}>
             {label ?? placeholder}
           </label>
           <input
@@ -44,11 +52,12 @@ export default function InlineRevertForm({
             type={type}
             name={name}
             placeholder={placeholder}
+            autoComplete="off"
             required
           />
         </div>
       ))}
-      <button type="submit" disabled={isPending}>
+      <button type="submit" className={styles.submit} disabled={isPending}>
         {isPending ? "Reverting…" : buttonText}
       </button>
       <ActionFeedback state={state} />

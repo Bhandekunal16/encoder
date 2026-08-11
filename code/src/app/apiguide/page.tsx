@@ -11,21 +11,18 @@ import type {
   RouteConfig,
   SamplesConfig,
 } from "@/types/apiGuide";
-import type { LinksConfig } from "@/types/app";
 import ApiSampleSection from "./ApiSampleSection";
 import styles from "./page.module.css";
 import appConfig from "@/core/json/app.config.json";
 
 const { description } = SITE_META;
 const { api: title } = TITLES;
-const { base } = routeConfig as RouteConfig;
 const { samples } = samplesConfig as SamplesConfig;
 const {
   title: pageTitle,
   description: pageDescription,
   tooltip,
 } = apiGuideConfig as ApiGuideConfig;
-const { back: linkText } = appConfig.LINKS as LinksConfig;
 
 validateSamples(samples);
 validateEncodingSelfTests();
@@ -36,25 +33,23 @@ export const metadata: Metadata = { title, description };
 
 export default function ApiGuidePage() {
   return (
-    <main className={styles.page}>
-      <Link href={base} className={styles.back}>
-        {linkText}
-      </Link>
+    <div className={styles.page}>
+      <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+        <Link href="/" className={styles.backLink}>
+          All Tools
+        </Link>
+      </nav>
 
-      <div className={styles.container}>
-        <header>
-          <h1>{pageTitle}</h1>
-          <p>{pageDescription}</p>
-        </header>
+      <h1 className={styles.title}>{pageTitle}</h1>
+      <p className={styles.description}>{pageDescription}</p>
 
-        {samples.map((sample) => (
-          <ApiSampleSection key={sample.id} sample={sample} />
-        ))}
+      {samples.map((sample) => (
+        <ApiSampleSection key={sample.id} sample={sample} />
+      ))}
 
-        <footer>
-          <p>{tooltip}</p>
-        </footer>
-      </div>
-    </main>
+      <footer className={styles.footer}>
+        <p>{tooltip}</p>
+      </footer>
+    </div>
   );
 }

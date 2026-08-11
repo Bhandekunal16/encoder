@@ -9,7 +9,7 @@ export default function ApiSampleSection({ sample }: ApiSampleSectionProps) {
   const { method, code, payload, response, title, id } = sample as ApiSample;
   const headingId = `api-sample-${id}`;
   return (
-    <section className={styles.route} aria-labelledby={headingId}>
+    <section className={`${styles.section} ${styles.route}`} aria-labelledby={headingId}>
       <h2 id={headingId}>{title}</h2>
 
       <p>

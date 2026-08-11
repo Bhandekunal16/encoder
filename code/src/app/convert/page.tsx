@@ -6,7 +6,7 @@ import routes from "../../core/json/route.config.json";
 import { RouteConfig } from "@/types/apiGuide";
 import config from "../../core/json/convert.config.json";
 import appConfig from "../../core/json/app.config.json";
-import { ButtonsConfig, LinksConfig } from "@/types/app";
+import { ButtonsConfig } from "@/types/app";
 import { validateConvertConfig } from "@/lib/validateConfig";
 import type { ConvertConfig } from "@/types/convert";
 import { validateEncodedResult } from "@/lib/validation";
@@ -19,7 +19,6 @@ const { base } = routes as RouteConfig;
 const { title: pageTitle, inputs } = config as ConvertConfig;
 validateConvertConfig(config as ConvertConfig);
 const { convert: buttonText } = appConfig.BUTTONS as ButtonsConfig;
-const { back: linkText } = appConfig.LINKS as LinksConfig;
 
 export default async function ConvertPage({ searchParams }: ConvertPageProps) {
   const { ans } = await searchParams;
@@ -32,15 +31,23 @@ export default async function ConvertPage({ searchParams }: ConvertPageProps) {
   const answer = validated.value;
 
   return (
-    <main className={styles.page}>
-      <div className={styles.container}>
-        <h1>{pageTitle}</h1>
-        <p className={styles.answer}>{answer}</p>
-        <InlineRevertForm inputs={inputs} buttonText={buttonText} />
-        <Link href={base} className={styles.backLink}>
-          {linkText}
+    <div className={styles.panel}>
+      <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+        <Link href="/tools/encode" className={styles.backLink}>
+          Word Encoder
         </Link>
+      </nav>
+
+      <h1 className={styles.title}>{pageTitle}</h1>
+
+      <div className={styles.resultCard}>
+        <span className={styles.resultLabel}>Encoded result</span>
+        <p className={styles.result}>{answer}</p>
       </div>
-    </main>
+
+      <div className={styles.formSection}>
+        <InlineRevertForm inputs={inputs} buttonText={buttonText} />
+      </div>
+    </div>
   );
 }
