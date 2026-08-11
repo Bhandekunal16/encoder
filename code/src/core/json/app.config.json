@@ -21,5 +21,8 @@
   "LINKS": {
     "back": "Go back",
     "wordDecoder": "Word Decoder"
+  },
+  "ERRORS": {
+    "somethingWentWrong": "Something went wrong. Please try again."
   }
 }

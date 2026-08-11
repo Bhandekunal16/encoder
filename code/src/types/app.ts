@@ -7,3 +7,7 @@ export type ButtonsConfig = {
   convert: string;
   revert: string;
 };
+
+export type ErrorConfig = {
+  somethingWentWrong: string;
+};

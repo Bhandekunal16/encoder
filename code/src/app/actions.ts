@@ -8,6 +8,11 @@ import {
 } from "@/lib/validation";
 import { logServerError } from "@/lib/logger";
 import type { WordActionState } from "@/types/actions";
+import type { ErrorConfig } from "@/types/app";
+import appConfig from "../core/json/app.config.json";
+
+const { ERRORS } = appConfig as { ERRORS: ErrorConfig };
+const { somethingWentWrong } = ERRORS;
 
 export async function convertWord(
   _prevState: WordActionState,
@@ -15,19 +20,17 @@ export async function convertWord(
 ): Promise<WordActionState> {
   const validated = validateConvertInput(formData.get("word"));
 
-  if (!validated.ok) {
+  if (!validated.ok)
     return { ok: false, error: encoderErrorToMessage(validated.code) };
-  }
 
   try {
     return { ok: true, result: encode(validated.value) };
   } catch (error) {
-    if (error instanceof WordEncoderError) {
+    if (error instanceof WordEncoderError)
       return { ok: false, error: error.message };
-    }
 
     logServerError("convertWord", error);
-    return { ok: false, error: "Something went wrong. Please try again." };
+    return { ok: false, error: somethingWentWrong };
   }
 }
 
@@ -37,18 +40,16 @@ export async function revertWord(
 ): Promise<WordActionState> {
   const validated = validateRevertInput(formData.get("word"));
 
-  if (!validated.ok) {
+  if (!validated.ok)
     return { ok: false, error: encoderErrorToMessage(validated.code) };
-  }
 
   try {
     return { ok: true, result: decode(validated.value) };
   } catch (error) {
-    if (error instanceof WordEncoderError) {
+    if (error instanceof WordEncoderError)
       return { ok: false, error: error.message };
-    }
 
     logServerError("revertWord", error);
-    return { ok: false, error: "Something went wrong. Please try again." };
+    return { ok: false, error: somethingWentWrong };
   }
 }
