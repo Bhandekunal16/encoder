@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { revertWord } from "@/app/actions";
+import InlineRevertForm from "@/components/InlineRevertForm";
 import styles from "./page.module.css";
 import routes from "../../core/json/route.config.json";
 import { RouteConfig } from "@/types/apiGuide";
@@ -36,23 +36,7 @@ export default async function ConvertPage({ searchParams }: ConvertPageProps) {
       <div className={styles.container}>
         <h1>{pageTitle}</h1>
         <p className={styles.answer}>{answer}</p>
-        <form action={revertWord} className={styles.form}>
-          {inputs.map(({ name, type, placeholder, label }) => (
-            <div key={name} className={styles.field}>
-              <label htmlFor={name} className={styles.srOnly}>
-                {label ?? placeholder}
-              </label>
-              <input
-                id={name}
-                type={type}
-                name={name}
-                placeholder={placeholder}
-                required
-              />
-            </div>
-          ))}
-          <button type="submit">{buttonText}</button>
-        </form>
+        <InlineRevertForm inputs={inputs} buttonText={buttonText} />
         <Link href={base} className={styles.backLink}>
           {linkText}
         </Link>

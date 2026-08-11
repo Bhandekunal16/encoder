@@ -1,56 +1,54 @@
 "use server";
 
-import { redirect } from "next/navigation";
-import { convert, revert } from "@/lib/wordEncoder";
-import routeConfig from "@/core/json/route.config.json";
-import type { RouteConfig } from "@/types/apiGuide";
+import { convert, revert, WordEncoderError } from "@/lib/wordEncoder";
 import {
-  isSafeResultRedirect,
+  encoderErrorToMessage,
   validateConvertInput,
   validateRevertInput,
 } from "@/lib/validation";
 import { logServerError } from "@/lib/logger";
+import type { WordActionState } from "@/types/actions";
 
-const { base } = routeConfig as RouteConfig;
+export async function convertWord(
+  _prevState: WordActionState,
+  formData: FormData,
+): Promise<WordActionState> {
+  const validated = validateConvertInput(formData.get("word"));
 
-export async function convertWord(formData: FormData) {
+  if (!validated.ok) {
+    return { ok: false, error: encoderErrorToMessage(validated.code) };
+  }
+
   try {
-    const validated = validateConvertInput(formData.get("word"));
-
-    if (!validated.ok) {
-      redirect(base);
-    }
-
-    const ans = convert(validated.value);
-
-    if (!isSafeResultRedirect("/convert", ans)) {
-      redirect(base);
-    }
-
-    redirect(`/convert?ans=${encodeURIComponent(ans)}`);
+    return { ok: true, result: convert(validated.value) };
   } catch (error) {
+    if (error instanceof WordEncoderError) {
+      return { ok: false, error: error.message };
+    }
+
     logServerError("convertWord", error);
-    redirect(base);
+    return { ok: false, error: "Something went wrong. Please try again." };
   }
 }
 
-export async function revertWord(formData: FormData) {
+export async function revertWord(
+  _prevState: WordActionState,
+  formData: FormData,
+): Promise<WordActionState> {
+  const validated = validateRevertInput(formData.get("word"));
+
+  if (!validated.ok) {
+    return { ok: false, error: encoderErrorToMessage(validated.code) };
+  }
+
   try {
-    const validated = validateRevertInput(formData.get("word"));
-
-    if (!validated.ok) {
-      redirect(base);
-    }
-
-    const ans = revert(validated.value);
-
-    if (!isSafeResultRedirect("/revert", ans)) {
-      redirect(base);
-    }
-
-    redirect(`/revert?ans=${encodeURIComponent(ans)}`);
+    return { ok: true, result: revert(validated.value) };
   } catch (error) {
+    if (error instanceof WordEncoderError) {
+      return { ok: false, error: error.message };
+    }
+
     logServerError("revertWord", error);
-    redirect(base);
+    return { ok: false, error: "Something went wrong. Please try again." };
   }
 }
