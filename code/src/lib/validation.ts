@@ -1,6 +1,6 @@
 import {
-  convert,
-  revert,
+  decode,
+  encode,
   WordEncoderError,
   type WordEncoderErrorCode,
   isSupportedCharacter,
@@ -33,7 +33,7 @@ export function validateConvertInput(input: unknown): ValidationResult<string> {
   }
 
   try {
-    convert(input);
+    encode(input);
     return { ok: true, value: input };
   } catch (error) {
     if (error instanceof WordEncoderError) {
@@ -50,7 +50,7 @@ export function validateRevertInput(input: unknown): ValidationResult<string> {
   }
 
   try {
-    revert(input);
+    decode(input);
     return { ok: true, value: input };
   } catch (error) {
     if (error instanceof WordEncoderError) {

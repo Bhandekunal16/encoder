@@ -1,6 +1,6 @@
 "use server";
 
-import { convert, revert, WordEncoderError } from "@/lib/wordEncoder";
+import { encode, decode, WordEncoderError } from "@/lib/wordEncoder";
 import {
   encoderErrorToMessage,
   validateConvertInput,
@@ -20,7 +20,7 @@ export async function convertWord(
   }
 
   try {
-    return { ok: true, result: convert(validated.value) };
+    return { ok: true, result: encode(validated.value) };
   } catch (error) {
     if (error instanceof WordEncoderError) {
       return { ok: false, error: error.message };
@@ -42,7 +42,7 @@ export async function revertWord(
   }
 
   try {
-    return { ok: true, result: revert(validated.value) };
+    return { ok: true, result: decode(validated.value) };
   } catch (error) {
     if (error instanceof WordEncoderError) {
       return { ok: false, error: error.message };

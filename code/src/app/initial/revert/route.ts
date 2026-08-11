@@ -1,4 +1,4 @@
-import { revert } from "@/lib/wordEncoder";
+import { decode } from "@/lib/wordEncoder";
 import {
   apiError,
   apiSuccess,
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       return apiError(encoderErrorToMessage(validated.code), 400);
     }
 
-    return apiSuccess(revert(validated.value));
+    return apiSuccess(decode(validated.value));
   } catch (error) {
     logServerError("POST /initial/revert", error);
     return apiError("Internal server error", 500);

@@ -1,4 +1,4 @@
-import { convert, revert } from "@/lib/wordEncoder";
+import { decode, encode } from "@/lib/wordEncoder";
 import {
   validateConvertInput,
   validateRevertInput,
@@ -38,6 +38,7 @@ const FAILURE_CASES: FailureCase[] = [
   },
   { id: "unicode-character", input: "héllo", validate: validateConvertInput },
   { id: "malformed-encoded", input: "8..5", validate: validateRevertInput },
+  { id: "leading-zero-token", input: "01", validate: validateRevertInput },
   { id: "negative-index", input: "-1.5", validate: validateRevertInput },
   { id: "trailing-dot-encoded", input: "8.", validate: validateRevertInput },
   { id: "out-of-range-index", input: "999", validate: validateRevertInput },
@@ -75,8 +76,8 @@ export function validateSamples(samples: ApiSample[]): void {
     }
 
     const actual = sample.id.includes("revert")
-      ? revert(validated.value)
-      : convert(validated.value);
+      ? decode(validated.value)
+      : encode(validated.value);
 
     if (actual !== sample.response.data) {
       throw new Error(
@@ -96,7 +97,7 @@ export function validateEncodingSelfTests(): void {
       );
     }
 
-    const encoded = convert(validated.value);
+    const encoded = encode(validated.value);
 
     if (testCase.expectedEncoded && encoded !== testCase.expectedEncoded) {
       throw new Error(
@@ -104,7 +105,7 @@ export function validateEncodingSelfTests(): void {
       );
     }
 
-    const roundTrip = revert(encoded);
+    const roundTrip = decode(encoded);
 
     if (roundTrip !== testCase.input) {
       throw new Error(
