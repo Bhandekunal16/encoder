@@ -1,5 +1,5 @@
 import toolsConfig from "@/core/json/tools.config.json";
-import type { Tool, ToolsConfig } from "@/types/tools";
+import type { Tool, ToolCategory, ToolsConfig } from "@/types/tools";
 
 const config = toolsConfig as ToolsConfig;
 
@@ -29,7 +29,7 @@ export function filterTools(tools: Tool[], query: string): Tool[] {
   );
 }
 
-export function filterCategories(query: string) {
+export function filterCategories(query: string): ToolCategory[] {
   const normalized = normalizeSearchQuery(query);
 
   if (!normalized) {

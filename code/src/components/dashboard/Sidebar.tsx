@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { filterCategories } from "@/lib/tools";
 import type { Tool } from "@/types/tools";
 import { useSearch } from "./SearchContext";
+import { useFilteredCategories } from "./useFilteredCategories";
 import { ToolIconGlyph } from "./icons";
 import styles from "./Sidebar.module.css";
 
@@ -53,8 +53,7 @@ function ToolNavItem({ tool, isActive }: ToolNavItemProps) {
 export default function Sidebar() {
   const pathname = usePathname();
   const { query, setQuery } = useSearch();
-  const filteredCategories = filterCategories(query);
-  const isSearching = query.trim().length > 0;
+  const { categories: filteredCategories, isSearching } = useFilteredCategories();
   const isHome = pathname === "/";
 
   return (
