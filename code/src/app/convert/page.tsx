@@ -22,9 +22,7 @@ export default async function ConvertPage({ searchParams }: ConvertPageProps) {
   const { ans } = await searchParams;
   const answer = ans?.trim();
 
-  if (!answer) {
-    redirect(base);
-  }
+  if (!answer) redirect(base);
 
   return (
     <main className={styles.page}>
