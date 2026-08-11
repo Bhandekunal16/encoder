@@ -60,9 +60,25 @@ export default function Sidebar() {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.search} role="search">
-        <svg className={styles.searchIcon} viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M10.5 10.5L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <svg
+          className={styles.searchIcon}
+          viewBox="0 0 16 16"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle
+            cx="7"
+            cy="7"
+            r="4.5"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M10.5 10.5L14 14"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
         </svg>
         <input
           id="tools-search"
@@ -86,7 +102,12 @@ export default function Sidebar() {
           className={`${styles.navItem} ${isHome ? styles.navItemActive : ""}`}
           aria-current={isHome ? "page" : undefined}
         >
-          <svg className={styles.homeIcon} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <svg
+            className={styles.homeIcon}
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
             <path
               d="M2 6.5L8 2l6 4.5V13a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"
               stroke="currentColor"
@@ -99,7 +120,8 @@ export default function Sidebar() {
 
         {isSearching && filteredCategories.length === 0 ? (
           <p className={styles.empty} role="status" aria-live="polite">
-            No tools match &ldquo;{query.trim()}&rdquo;. Try a different search term.
+            No tools match &ldquo;{query.trim()}&rdquo;. Try a different search
+            term.
           </p>
         ) : (
           filteredCategories.map((category) => (
