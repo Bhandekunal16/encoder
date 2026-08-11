@@ -19,6 +19,7 @@
     "revert": "Revert"
   },
   "LINKS": {
-    "back": "Go back"
+    "back": "Go back",
+    "wordDecoder": "Word Decoder"
   }
 }
