@@ -33,45 +33,6 @@ export default function HomePage() {
       </InformationCard>
 
       <WordConverterForms />
-
-      <InformationCard>
-        <h3>Welcome to the Counter App!</h3>
-        <p>
-          This simple and interactive <Link href="/count">Counter</Link> App
-          lets you perform basic counting operations with ease. You can increase,
-          decrease, or reset the count, and even toggle between two counters.
-        </p>
-        <h3>How to Use:</h3>
-        <ul>
-          <li>
-            Primary Counter:
-            <ul>
-              <li>
-                Use the &quot;Increase&quot;, &quot;Decrease&quot;, and
-                &quot;Reset&quot; buttons in the first counter box to adjust the
-                count.
-              </li>
-              <li>The result is displayed live below the buttons.</li>
-            </ul>
-          </li>
-          <li>
-            Show/Hide Secondary Counter:
-            <ul>
-              <li>Click the &quot;+&quot; button to reveal the secondary counter.</li>
-              <li>Click the &quot;−&quot; button to hide it.</li>
-            </ul>
-          </li>
-          <li>
-            Secondary Counter:
-            <ul>
-              <li>
-                Once visible, use its buttons to perform similar operations as
-                the primary counter.
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </InformationCard>
     </main>
   );
 }
