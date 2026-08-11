@@ -7,6 +7,7 @@ import appConfig from "../../core/json/app.config.json";
 import { validatePlaintextResult } from "@/lib/validation";
 import { LinksConfig } from "@/types/app";
 import revertConfig from "../../core/json/revert.config.json";
+import routeConfig from "../../core/json/route.config.json";
 
 const { LINKS } = appConfig as { LINKS: LinksConfig };
 const { wordDecoder } = LINKS;
@@ -14,6 +15,7 @@ const { title, resultLabel } = revertConfig as {
   title: string;
   resultLabel: string;
 };
+const { wordDecoderUrl } = routeConfig as { wordDecoderUrl: string };
 
 type RevertPageProps = {
   searchParams: Promise<{ ans?: string }>;
@@ -32,7 +34,7 @@ export default async function RevertPage({ searchParams }: RevertPageProps) {
   return (
     <div className={styles.panel}>
       <nav className={styles.breadcrumb} aria-label="Breadcrumb">
-        <Link href="/tools/decode" className={styles.backLink}>
+        <Link href={wordDecoderUrl} className={styles.backLink}>
           {wordDecoder}
         </Link>
       </nav>
