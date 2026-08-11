@@ -32,16 +32,16 @@ export default async function ConvertPage({ searchParams }: ConvertPageProps) {
         <h1>{pageTitle}</h1>
         <p className={styles.answer}>{answer}</p>
         <form action={revertWord} className={styles.form}>
-          {inputs.map((input) => (
-            <div key={input.name} className={styles.field}>
-              <label htmlFor={input.name} className={styles.srOnly}>
-                {input.label ?? input.placeholder}
+          {inputs.map(({ name, type, placeholder, label }) => (
+            <div key={name} className={styles.field}>
+              <label htmlFor={name} className={styles.srOnly}>
+                {label ?? placeholder}
               </label>
               <input
-                id={input.name}
-                type={input.type}
-                name={input.name}
-                placeholder={input.placeholder}
+                id={name}
+                type={type}
+                name={name}
+                placeholder={placeholder}
                 required
               />
             </div>
