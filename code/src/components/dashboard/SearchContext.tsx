@@ -13,9 +13,13 @@ type SearchContextValue = {
   setQuery: (query: string) => void;
 };
 
+type SearchProviderProps = {
+  children: ReactNode;
+};
+
 const SearchContext = createContext<SearchContextValue | null>(null);
 
-export function SearchProvider({ children }: { children: ReactNode }) {
+export function SearchProvider({ children }: SearchProviderProps) {
   const [query, setQuery] = useState("");
 
   const value = useMemo(() => ({ query, setQuery }), [query]);
@@ -28,8 +32,7 @@ export function SearchProvider({ children }: { children: ReactNode }) {
 export function useSearch() {
   const context = useContext(SearchContext);
 
-  if (!context) 
-    throw new Error("useSearch must be used within SearchProvider");
+  if (!context) throw new Error("useSearch must be used within SearchProvider");
 
   return context;
 }
