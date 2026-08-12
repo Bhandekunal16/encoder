@@ -23,7 +23,6 @@ export {
 } from "./limits";
 export { WordEncoderError, type WordEncoderErrorCode } from "./errors";
 
-/** Validated charset entries: one Unicode code point per position. */
 const CHARSET_ENTRIES = parseCharsetEntries(CHARSET);
 
 const CHAR_TO_INDEX = new Map<string, number>(
@@ -31,59 +30,52 @@ const CHAR_TO_INDEX = new Map<string, number>(
 );
 
 function parseCanonicalToken(token: string): number {
-  if (!CANONICAL_TOKEN_PATTERN.test(token)) {
+  if (!CANONICAL_TOKEN_PATTERN.test(token))
     throw new WordEncoderError(
       `Invalid encoded token: ${JSON.stringify(token)}`,
       "InvalidEncodedToken",
     );
-  }
 
-  if (token.length > MAX_SAFE_INTEGER_DIGIT_COUNT) {
+  if (token.length > MAX_SAFE_INTEGER_DIGIT_COUNT)
     throw new WordEncoderError(
       `Invalid encoded index: ${JSON.stringify(token)}`,
       "InvalidEncodedToken",
     );
-  }
 
   const index = Number(token);
 
-  if (!Number.isSafeInteger(index) || index < 0) {
+  if (!Number.isSafeInteger(index) || index < 0)
     throw new WordEncoderError(
       `Invalid encoded index: ${JSON.stringify(token)}`,
       "InvalidEncodedToken",
     );
-  }
 
-  if (index >= CHARSET_ENTRIES.length) {
+  if (index >= CHARSET_ENTRIES.length)
     throw new WordEncoderError(
       `Encoded index out of range: ${index}`,
       "EncodedIndexOutOfRange",
     );
-  }
 
   return index;
 }
 
 function validateEncodedInput(input: string): number[] {
-  if (input.length === 0) {
+  if (input.length === 0)
     throw new WordEncoderError("Input cannot be empty", "EmptyInput");
-  }
 
-  if (input.length > MAX_ENCODED_LENGTH) {
+  if (input.length > MAX_ENCODED_LENGTH)
     throw new WordEncoderError(
       `Encoded input exceeds maximum length of ${MAX_ENCODED_LENGTH} characters`,
       "InputTooLong",
     );
-  }
 
   const values = input.split(".");
 
-  if (values.length === 0 || values.some((token) => token.length === 0)) {
+  if (values.length === 0 || values.some((token) => token.length === 0))
     throw new WordEncoderError(
       "Malformed encoded input",
       "InvalidEncodedToken",
     );
-  }
 
   const indexes = new Array<number>(values.length);
 
@@ -98,10 +90,6 @@ export function isSupportedCharacter(char: string): boolean {
   return CHAR_TO_INDEX.has(char);
 }
 
-/**
- * Returns whether `input` is a valid canonical encoded representation.
- * Does not throw; invalid inputs return `false`.
- */
 export function isValidEncoded(input: string): boolean {
   try {
     validateEncodedInput(input);
@@ -116,16 +104,14 @@ export function isValidEncoded(input: string): boolean {
 }
 
 export function encode(input: string): string {
-  if (input.length === 0) {
+  if (input.length === 0)
     throw new WordEncoderError("Input cannot be empty", "EmptyInput");
-  }
 
-  if (input.length > MAX_INPUT_LENGTH) {
+  if (input.length > MAX_INPUT_LENGTH)
     throw new WordEncoderError(
       `Input exceeds maximum length of ${MAX_INPUT_LENGTH} characters`,
       "InputTooLong",
     );
-  }
 
   const result = new Array<string>(input.length);
 
@@ -133,35 +119,26 @@ export function encode(input: string): string {
     const char = input[i]!;
     const index = CHAR_TO_INDEX.get(char);
 
-    if (index === undefined) {
+    if (index === undefined)
       throw new WordEncoderError(
         `Unsupported character: ${JSON.stringify(char)}`,
         "UnsupportedCharacter",
       );
-    }
 
     result[i] = String(index);
   }
 
   const encoded = result.join(".");
 
-  if (encoded.length > MAX_ENCODED_LENGTH) {
+  if (encoded.length > MAX_ENCODED_LENGTH)
     throw new WordEncoderError(
       `Encoded output exceeds maximum length of ${MAX_ENCODED_LENGTH} characters`,
       "InputTooLong",
     );
-  }
 
   return encoded;
 }
 
-/**
- * Decode a dot-separated sequence of canonical numeric charset indexes.
- *
- * Delimiter semantics: `.` is exclusively a token separator, never a decimal
- * point. For example, `"1.5"` decodes to `CHARSET[1] + CHARSET[5]` (two
- * characters), not a fractional value.
- */
 export function decode(input: string): string {
   const indexes = validateEncodedInput(input);
   const result = new Array<string>(indexes.length);
