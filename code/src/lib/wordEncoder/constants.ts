@@ -21,10 +21,14 @@
  * - Unicode letters/symbols outside this set
  *
  * Unicode semantics:
- * CHARSET contains only BMP characters that occupy a single UTF-16 code unit.
- * Encoding and decoding iterate by code unit (`input[i]`), not by Unicode code point.
- * Surrogate pairs and combining characters are intentionally unsupported.
- * Input is never normalized (NFC/NFD/NFKC/NFKD).
+ * - Each CHARSET entry is one Unicode code point, validated at module load.
+ * - Entries are restricted to the BMP (U+0000–U+FFFF); supplementary code points
+ *   (e.g. emoji) are not permitted in the charset.
+ * - Plaintext encoding iterates by UTF-16 code unit (`input[i]`), not by Unicode
+ *   code point. For the supported charset this is equivalent to BMP code points.
+ * - Characters outside the charset (including emoji, accented letters, CJK, and
+ *   lone surrogates) are rejected as unsupported input.
+ * - Input is never normalized (NFC/NFD/NFKC/NFKD).
  */
 export const CHARSET =
   ` abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".,:;'|/?!@#$%^&*()-_+={}[]<>0123456789`;

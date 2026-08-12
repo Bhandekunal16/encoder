@@ -17,7 +17,7 @@ import {
   revert,
   WordEncoderError,
 } from "@/lib/wordEncoder";
-import { assertCharsetIntegrity } from "@/lib/wordEncoder/charsetIntegrity";
+import { assertCharsetIntegrity, parseCharsetEntries } from "@/lib/wordEncoder/charsetIntegrity";
 import {
   validateConvertInput,
   validateRevertInput,
@@ -58,13 +58,13 @@ describe("wordEncoder", () => {
       expect(MAX_TOKEN_LENGTH).toBe(2);
     });
 
-    it("passes charset integrity validation", () => {
-      expect(() => assertCharsetIntegrity(CHARSET)).not.toThrow();
+    it("keeps charset entry count aligned with the BMP string length", () => {
+      expect(parseCharsetEntries(CHARSET).length).toBe(CHARSET.length);
     });
 
     it("rejects duplicate charset characters", () => {
       expect(() => assertCharsetIntegrity("aa")).toThrow(
-        /unique characters/i,
+        /unique Unicode code points/i,
       );
     });
 
@@ -92,8 +92,10 @@ describe("wordEncoder", () => {
 
   describe("charset mapping invariants", () => {
     it("maps every charset position to its canonical index token", () => {
-      for (let i = 0; i < CHARSET.length; i++) {
-        const char = CHARSET[i]!;
+      const entries = parseCharsetEntries(CHARSET);
+
+      for (let i = 0; i < entries.length; i++) {
+        const char = entries[i]!;
 
         expect(encode(char)).toBe(String(i));
         expect(decode(String(i))).toBe(char);
@@ -371,7 +373,7 @@ describe("wordEncoder", () => {
     });
 
     it("round-trips every character in CHARSET", () => {
-      for (const char of CHARSET) {
+      for (const char of parseCharsetEntries(CHARSET)) {
         expect(decode(encode(char))).toBe(char);
       }
     });
@@ -384,7 +386,7 @@ describe("wordEncoder", () => {
 
   describe("property-style fuzz testing", () => {
     it("round-trips single-character strings", () => {
-      for (const char of CHARSET) {
+      for (const char of parseCharsetEntries(CHARSET)) {
         expect(decode(encode(char))).toBe(char);
       }
     });

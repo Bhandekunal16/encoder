@@ -4,7 +4,7 @@ import {
   MAX_ENCODED_LENGTH,
   MAX_INPUT_LENGTH,
 } from "./constants";
-import { assertCharsetIntegrity } from "./charsetIntegrity";
+import { parseCharsetEntries } from "./charsetIntegrity";
 import { MAX_SAFE_INTEGER_DIGIT_COUNT } from "./limits";
 import { WordEncoderError } from "./errors";
 
@@ -23,10 +23,11 @@ export {
 } from "./limits";
 export { WordEncoderError, type WordEncoderErrorCode } from "./errors";
 
-assertCharsetIntegrity(CHARSET);
+/** Validated charset entries: one Unicode code point per position. */
+const CHARSET_ENTRIES = parseCharsetEntries(CHARSET);
 
 const CHAR_TO_INDEX = new Map<string, number>(
-  [...CHARSET].map((char, index) => [char, index]),
+  CHARSET_ENTRIES.map((char, index) => [char, index]),
 );
 
 function parseCanonicalToken(token: string): number {
@@ -53,7 +54,7 @@ function parseCanonicalToken(token: string): number {
     );
   }
 
-  if (index >= CHARSET.length) {
+  if (index >= CHARSET_ENTRIES.length) {
     throw new WordEncoderError(
       `Encoded index out of range: ${index}`,
       "EncodedIndexOutOfRange",
@@ -94,7 +95,7 @@ function validateEncodedInput(input: string): number[] {
 }
 
 export function isSupportedCharacter(char: string): boolean {
-  return char.length === 1 && CHAR_TO_INDEX.has(char);
+  return CHAR_TO_INDEX.has(char);
 }
 
 /**
@@ -166,7 +167,7 @@ export function decode(input: string): string {
   const result = new Array<string>(indexes.length);
 
   for (let i = 0; i < indexes.length; i++) {
-    result[i] = CHARSET[indexes[i]!]!;
+    result[i] = CHARSET_ENTRIES[indexes[i]!]!;
   }
 
   return result.join("");
