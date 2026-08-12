@@ -7,13 +7,12 @@ import styles from "./ToolGrid.module.css";
 export default function ToolGrid() {
   const { categories, isSearching } = useFilteredCategories();
 
-  if (categories.length === 0) {
+  if (categories.length === 0)
     return (
       <p className={styles.empty} role="status" aria-live="polite">
         No tools match your search.
       </p>
     );
-  }
 
   if (isSearching) {
     const tools = categories.flatMap((category) => category.tools);
