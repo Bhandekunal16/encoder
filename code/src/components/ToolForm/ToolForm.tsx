@@ -1,61 +1,54 @@
 "use client";
 
 import { useActionState, useId } from "react";
-import { revertWord } from "@/app/actions";
 import type { WordActionState } from "@/types/actions";
+import ActionFeedback from "./ActionFeedback";
 import styles from "./ToolForm.module.css";
 
-type ActionFeedbackProps = {
-  state: WordActionState;
-  inputId: string;
-  errorId: string;
+type WordFormAction = (
+  prevState: WordActionState,
+  formData: FormData,
+) => WordActionState | Promise<WordActionState>;
+
+type ToolFormProps = {
+  action: WordFormAction;
+  label: string;
+  placeholder: string;
+  submitLabel: string;
+  pendingLabel: string;
   resultLabel: string;
+  encodedInput?: boolean;
 };
 
-function ActionFeedback({
-  state,
-  inputId,
-  errorId,
+export default function ToolForm({
+  action,
+  label,
+  placeholder,
+  submitLabel,
+  pendingLabel,
   resultLabel,
-}: ActionFeedbackProps) {
-  if (!state) return null;
-
-  if (state.ok)
-    return (
-      <output htmlFor={inputId} className={styles.output} aria-live="polite">
-        <span className={styles.outputLabel}>{resultLabel}</span>
-        <p className={styles.result}>{state.result}</p>
-      </output>
-    );
-
-  return (
-    <div id={errorId} className={styles.output} role="alert">
-      <p className={styles.error}>{state.error}</p>
-    </div>
-  );
-}
-
-export default function DecodeForm() {
+  encodedInput = false,
+}: ToolFormProps) {
   const inputId = useId();
   const errorId = useId();
-  const [state, action, isPending] = useActionState(revertWord, null);
+  const [state, formAction, isPending] = useActionState(action, null);
   const hasError = state?.ok === false;
 
   return (
-    <form action={action} className={styles.form}>
+    <form action={formAction} className={styles.form}>
       <div className={styles.fieldGroup}>
         <label htmlFor={inputId} className={styles.label}>
-          Encoded text
+          {label}
         </label>
         <input
           id={inputId}
           type="text"
           name="word"
-          placeholder="e.g. 7.4.11.11.14"
+          placeholder={placeholder}
           autoComplete="off"
-          autoCapitalize="off"
-          autoCorrect="off"
-          spellCheck={false}
+          autoCapitalize={encodedInput ? "off" : undefined}
+          autoCorrect={encodedInput ? "off" : undefined}
+          spellCheck={encodedInput ? false : undefined}
           enterKeyHint="go"
           required
           aria-invalid={hasError || undefined}
@@ -70,7 +63,7 @@ export default function DecodeForm() {
           disabled={isPending}
           aria-busy={isPending}
         >
-          {isPending ? "Decoding…" : "Decode"}
+          {isPending ? pendingLabel : submitLabel}
         </button>
       </div>
 
@@ -78,7 +71,7 @@ export default function DecodeForm() {
         state={state}
         inputId={inputId}
         errorId={errorId}
-        resultLabel="Decoded result"
+        resultLabel={resultLabel}
       />
     </form>
   );

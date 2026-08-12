@@ -1,4 +1,4 @@
-import EncodeForm from "@/components/EncodeForm";
+import EncodeForm from "@/components/ToolForm/EncodeForm";
 import ToolPanel from "@/components/dashboard/ToolPanel";
 import toolsConfig from "../../../core/json/tools.config.json";
 

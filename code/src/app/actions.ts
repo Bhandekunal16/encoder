@@ -1,12 +1,8 @@
 "use server";
 
-import { encode, decode, WordEncoderError } from "@/lib/wordEncoder";
-import {
-  encoderErrorToMessage,
-  validateConvertInput,
-  validateRevertInput,
-} from "@/lib/validation";
-import { logServerError } from "@/lib/logger";
+import { encode, decode } from "@/lib/wordEncoder";
+import { validateConvertInput, validateRevertInput } from "@/lib/validation";
+import { submitWordFormAction } from "@/lib/wordFormAction";
 import type { WordActionState } from "@/types/actions";
 import type { ErrorConfig } from "@/types/app";
 import appConfig from "../core/json/app.config.json";
@@ -18,38 +14,22 @@ export async function convertWord(
   _prevState: WordActionState,
   formData: FormData,
 ): Promise<WordActionState> {
-  const validated = validateConvertInput(formData.get("word"));
-
-  if (!validated.ok)
-    return { ok: false, error: encoderErrorToMessage(validated.code) };
-
-  try {
-    return { ok: true, result: encode(validated.value) };
-  } catch (error) {
-    if (error instanceof WordEncoderError)
-      return { ok: false, error: error.message };
-
-    logServerError("convertWord", error);
-    return { ok: false, error: somethingWentWrong };
-  }
+  return submitWordFormAction(formData, {
+    validate: validateConvertInput,
+    transform: encode,
+    actionName: "convertWord",
+    fallbackError: somethingWentWrong,
+  });
 }
 
 export async function revertWord(
   _prevState: WordActionState,
   formData: FormData,
 ): Promise<WordActionState> {
-  const validated = validateRevertInput(formData.get("word"));
-
-  if (!validated.ok)
-    return { ok: false, error: encoderErrorToMessage(validated.code) };
-
-  try {
-    return { ok: true, result: decode(validated.value) };
-  } catch (error) {
-    if (error instanceof WordEncoderError)
-      return { ok: false, error: error.message };
-
-    logServerError("revertWord", error);
-    return { ok: false, error: somethingWentWrong };
-  }
+  return submitWordFormAction(formData, {
+    validate: validateRevertInput,
+    transform: decode,
+    actionName: "revertWord",
+    fallbackError: somethingWentWrong,
+  });
 }

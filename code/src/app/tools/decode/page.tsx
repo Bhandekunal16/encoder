@@ -1,4 +1,4 @@
-import DecodeForm from "@/components/DecodeForm";
+import DecodeForm from "@/components/ToolForm/DecodeForm";
 import ToolPanel from "@/components/dashboard/ToolPanel";
 import toolsConfig from "../../../core/json/tools.config.json";
 
