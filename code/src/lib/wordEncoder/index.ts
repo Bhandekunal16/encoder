@@ -59,7 +59,7 @@ function parseCanonicalToken(token: string): number {
   return index;
 }
 
-function validateEncodedInput(input: string): number[] {
+function parseEncodedIndexes(input: string): number[] {
   if (input.length === 0)
     throw new WordEncoderError("Input cannot be empty", "EmptyInput");
 
@@ -71,7 +71,7 @@ function validateEncodedInput(input: string): number[] {
 
   const values = input.split(".");
 
-  if (values.length === 0 || values.some((token) => token.length === 0))
+  if (values.some((token) => token.length === 0))
     throw new WordEncoderError(
       "Malformed encoded input",
       "InvalidEncodedToken",
@@ -87,12 +87,12 @@ function validateEncodedInput(input: string): number[] {
 }
 
 export function isSupportedCharacter(char: string): boolean {
-  return CHAR_TO_INDEX.has(char);
+  return char.length === 1 && CHAR_TO_INDEX.has(char);
 }
 
 export function isValidEncoded(input: string): boolean {
   try {
-    validateEncodedInput(input);
+    parseEncodedIndexes(input);
     return true;
   } catch (error) {
     if (error instanceof WordEncoderError) {
@@ -133,14 +133,14 @@ export function encode(input: string): string {
   if (encoded.length > MAX_ENCODED_LENGTH)
     throw new WordEncoderError(
       `Encoded output exceeds maximum length of ${MAX_ENCODED_LENGTH} characters`,
-      "InputTooLong",
+      "EncodedOutputTooLong",
     );
 
   return encoded;
 }
 
 export function decode(input: string): string {
-  const indexes = validateEncodedInput(input);
+  const indexes = parseEncodedIndexes(input);
   const result = new Array<string>(indexes.length);
 
   for (let i = 0; i < indexes.length; i++) {

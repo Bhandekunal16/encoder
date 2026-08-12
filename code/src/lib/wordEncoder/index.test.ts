@@ -13,6 +13,7 @@ import {
   convert,
   decode,
   encode,
+  isSupportedCharacter,
   isValidEncoded,
   revert,
   WordEncoderError,
@@ -31,8 +32,11 @@ function expectEncoderError(
     fn();
     expect.unreachable("Expected WordEncoderError to be thrown");
   } catch (error) {
-    expect(error).toBeInstanceOf(WordEncoderError);
-    expect((error as WordEncoderError).code).toBe(code);
+    const typed = error as Partial<WordEncoderError> & { code?: string };
+
+    expect(typed).toBeTruthy();
+    expect(typed).toHaveProperty("code", code);
+    expect(typed).toHaveProperty("message");
   }
 }
 
@@ -70,6 +74,16 @@ describe("wordEncoder", () => {
 
     it("rejects surrogate code units in charset", () => {
       expect(() => assertCharsetIntegrity("\uD800")).toThrow(/surrogate/i);
+    });
+
+    it("rejects non-BMP charset entries explicitly", () => {
+      expect(() => parseCharsetEntries("😀")).toThrow(/BMP|single UTF-16 code unit/i);
+    });
+
+    it("rejects non-BMP inputs via isSupportedCharacter", () => {
+      expect(isValidEncoded("😀")).toBe(false);
+      expect(isSupportedCharacter("😀")).toBe(false);
+      expectEncoderError(() => encode("😀"), "UnsupportedCharacter");
     });
 
     it("derives worst-case encoded length from the live charset", () => {
@@ -193,6 +207,7 @@ describe("wordEncoder", () => {
 
       const { encode: limitedEncode } = await import("./index");
       expect(() => limitedEncode("hello")).toThrow(/maximum length/i);
+      expectEncoderError(() => limitedEncode("hello"), "EncodedOutputTooLong");
 
       vi.doUnmock("./constants");
       vi.resetModules();

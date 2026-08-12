@@ -1,6 +1,7 @@
 export type WordEncoderErrorCode =
   | "EmptyInput"
   | "InputTooLong"
+  | "EncodedOutputTooLong"
   | "UnsupportedCharacter"
   | "InvalidEncodedToken"
   | "EncodedIndexOutOfRange"

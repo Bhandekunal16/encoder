@@ -73,6 +73,8 @@ export function encoderErrorToMessage(code: WordEncoderErrorCode): string {
       return "Input cannot be empty";
     case "InputTooLong":
       return "Input is too long";
+    case "EncodedOutputTooLong":
+      return "Encoded output exceeds maximum length";
     case "UnsupportedCharacter":
       return "Input contains unsupported characters";
     case "InvalidEncodedToken":

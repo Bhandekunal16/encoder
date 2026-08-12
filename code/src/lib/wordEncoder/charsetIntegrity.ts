@@ -2,6 +2,11 @@ const SURROGATE_MIN = 0xd800;
 const SURROGATE_MAX = 0xdfff;
 const BMP_MAX_CODE_POINT = 0xffff;
 
+/**
+ * The library intentionally supports only single UTF-16 code units in the BMP.
+ * This keeps the mapping stable, predictable, and consistent with the legacy
+ * string indexing behavior used by encode/decode.
+ */
 export function parseCharsetEntries(charset: string): readonly string[] {
   if (charset.length === 0) throw new Error("CHARSET must not be empty");
 
@@ -10,6 +15,12 @@ export function parseCharsetEntries(charset: string): readonly string[] {
 
   for (let i = 0; i < entries.length; i++) {
     const entry = entries[i]!;
+
+    if (entry.length !== 1)
+      throw new Error(
+        `CHARSET entry at index ${i} must be a single UTF-16 code unit`,
+      );
+
     const codePoint = entry.codePointAt(0);
 
     if (codePoint === undefined)
